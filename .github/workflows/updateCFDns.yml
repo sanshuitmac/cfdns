@@ -4,10 +4,13 @@ on:
   schedule:
     # IMPORTANT: Set cron job in UTC timezone 。+8才是北京时间
     - cron:  '5 * * * *'
+  watch:
+    types: started
 
 jobs:
   run-python-script:
     runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'watch'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
