@@ -1,12 +1,7 @@
 import json
-import requests
+import os
 
-# 不需要开梯子就能访问CloudFlare。开了梯子，python的request会有问题，暂不知如何解决。。
-# Cloudflare API 认证信息
-CF_EMAIL = 'xjjltmac@gmail.com'  # Cloudflare 登录邮箱
-CF_API_KEY = '6651e30736878a43a9c0a4148eedcb0f7224a'  # Cloudflare API Key
-CF_ZONE_ID = '6b264ba97dd0722e3c909207a7492677'  # Cloudflare 域名的 Zone ID
-DOMAIN_NAME = 'yuiop.66279679.xyz'  # 要更新的域名
+import requests
 
 
 # 读取txt的ip文件
@@ -104,11 +99,11 @@ if __name__ == "__main__":
     # 获取ip_lists前5个
     best5_ip_list = ip_list[:5]
 
-    # 更新至cf域名：yuiop.528166.xyz 。 CloudFlare API相关必要参数信息
-    email = 'xjjltmac@gmail.com'
-    global_key = '6651e30736878a43a9c0a4148eedcb0f7224a'
-    zone_id = '26306ad3a06193a553d668c7fe202945'  # 各个域名，都有一个唯一zone_id 换一级域名时，记得换
-    domain = 'yuiop.528166.xyz'
+    # 更新至cf域名： CloudFlare API相关必要参数信息，通过github环境变量设置
+    EMAIL = os.environ.get("EMAIL")
+    GLOBAL_KEY = os.environ.get("GLOBAL_KEY")
+    ZONE_ID = os.environ.get("ZONE_ID")
+    DOMAIN = os.environ.get("DOMAIN")
 
     # 更新cf域名记录为最新5个优选ip
-    update_dns_records(email, global_key, zone_id, domain, best5_ip_list)
+    update_dns_records(EMAIL, GLOBAL_KEY, ZONE_ID, DOMAIN, best5_ip_list)
