@@ -21,10 +21,9 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install requests    # 本项目只需安装requests
+        run: pip install requests
 
       - name: start run
-          # 读取配置的环境变量
           env:
             EMAIL: ${{ secrets.EMAIL }}
             GLOBAL_KEY: ${{ secrets.GLOBAL_KEY }}
