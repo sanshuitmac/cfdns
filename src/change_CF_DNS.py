@@ -15,14 +15,6 @@ def read_txt(file_path):
             ip_list.append(line.strip())
 
 
-"""
-request得到的请求响应对象数据处理，json处理：
-①response.json(): 这个方法会尝试将响应内容解析为 JSON 格式（对象），并返回对应的 Python 字典。如果响应内容不是有效的 JSON 格式，那么会引发 json.decoder.JSONDecodeError 异常。
-②response.text: 这个方法返回响应内容的原始文本，以字符串的形式返回。仍需要 json.load(s) 获得json格式数据， 参数s只能是字符串或者字符串字节数组，不能是字典
-③json格式数据获取key两种方法 如json_re =response.json()  a：字典方法： json_re.get('key') 或者b:索引方法 json_re['key']获取value。具体见下方应用
-"""
-
-
 # 更新cf的dns记录
 def update_dns_records(email, global_key, zone_id, domain, ip_list):
     # 获取当前域名的记录列表
@@ -73,9 +65,9 @@ def send_post_request(url, data):
     return response.text
 
 
-# 解析接口响应，获取所有优选ip列表
+# 解析接口响应json，获取所有优选ip列表
 def get_best_ip(response_str):
-    response_json = json.loads(response_str)  # 解析json串为json对象的工具：json.loads(response)。形参是字符串
+    response_json = json.loads(response_str)
     goods_list = response_json["data"]["good"]
     # print(goods_list)
     ip_lists = [item["ip"] for item in goods_list]
@@ -92,11 +84,10 @@ if __name__ == "__main__":
 
     # 发送请求到指定接口获取优选ip列表
     url = 'https://vps789.com/vps/sum/cfIpTop20'
-    # 发送get请求到接口获取json串
     response = send_get_request(url)
-    # 解析json串获取所有优选ip列表
+    # 解析响应结果获取对应接口最新优选ip列表
     ip_list = get_best_ip(response)
-    # 获取ip_lists前5个
+    # 获取优选ip列表ip_lists前5个写入域名记录
     best5_ip_list = ip_list[:5]
 
     # 更新至cf域名： CloudFlare API相关必要参数信息，通过github环境变量设置
