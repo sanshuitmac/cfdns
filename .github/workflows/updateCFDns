@@ -1,0 +1,18 @@
+name: updateCFDns
+on:
+  workflow_dispatch:
+  schedule:
+    # IMPORTANT: Set cron job in UTC timezone 。+8才是北京时间
+    - cron:  '0 17 * * *'
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.9.0'
+      - run: pip install requests    # 本项目只需安装requests
+      - run: python src/change_CF_DNS.py
+
