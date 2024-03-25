@@ -24,10 +24,10 @@ jobs:
         run: pip install requests
 
       - name: start run
-          env:
-            EMAIL: ${{ secrets.EMAIL }}
-            GLOBAL_KEY: ${{ secrets.GLOBAL_KEY }}
-            ZONE_ID: ${{ secrets.ZONE_ID }}
-            DOMAIN: ${{ secrets.DOMAIN }}
-          run: python src/change_CF_DNS.py
+        env:
+          EMAIL: ${{ secrets.EMAIL }}
+          GLOBAL_KEY: ${{ secrets.GLOBAL_KEY }}
+          ZONE_ID: ${{ secrets.ZONE_ID }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+        run: python src/change_CF_DNS.py
 
