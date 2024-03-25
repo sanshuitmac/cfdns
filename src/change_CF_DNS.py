@@ -100,10 +100,10 @@ if __name__ == "__main__":
     best5_ip_list = ip_list[:5]
 
     # 更新至cf域名： CloudFlare API相关必要参数信息，通过github环境变量设置
-    EMAIL = os.environ.get("EMAIL")
-    GLOBAL_KEY = os.environ.get("GLOBAL_KEY")
-    ZONE_ID = os.environ.get("ZONE_ID")
-    DOMAIN = os.environ.get("DOMAIN")
+    EMAIL_NAME = os.environ.get("EMAIL")
+    GLOBAL_KEY_TOKEN = os.environ.get("GLOBAL_KEY")
+    ZONE_ID_TOKEN = os.environ.get("ZONE_ID")
+    DOMAIN_NAME = os.environ.get("DOMAIN")
 
     # 更新cf域名记录为最新5个优选ip
-    update_dns_records(EMAIL, GLOBAL_KEY, ZONE_ID, DOMAIN, best5_ip_list)
+    update_dns_records(EMAIL_NAME, GLOBAL_KEY_TOKEN, ZONE_ID_TOKEN, DOMAIN_NAME, best5_ip_list)
