@@ -34,6 +34,7 @@ def update_dns_records(email, global_key, zone_id, domain, ip_list):
 
     # 添加优选ip进域名新记录
     print('正在新增新的dns记录...')
+    result_list = []
     for ip_address in ip_list:
         # 添加新的记录
         data = {
@@ -45,18 +46,39 @@ def update_dns_records(email, global_key, zone_id, domain, ip_list):
         }
         add_url = f'https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records'
         response = requests.post(add_url, json=data, headers=headers)
-        response_json = response.json()  # Response对象转json对象，无需再json.load(X) 也会提示类型错误。
+        response_json = response.json()
         # print(response_json)
-        result = response_json["success"]  # json对象直接获取key，方法可以json['key'] 或者json.get('key')
+        result = response_json["success"]  # 或者response_json.get("success")
 
         if result:
-            print(f'{ip_address}\t新增dns记录成功')
+            result_str = ip_address + '\t新增DNS ' + DOMAIN_NAME + '记录成功'
+            print(result_str)
+            result_list.append(result_str)
+    # 推送tg消息。非空和空串
+    if bool(BOT_TOKEN):
+        result_str = '\n'.join(result_list)
+        send_telegram_message(BOT_TOKEN, CHAT_ID, result_str)
+
+
+# 推送tg消息
+def send_telegram_message(bot_token, chat_id, message):
+    tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": message
+    }
+    response = requests.post(tg_url, json=data)
+    if response.status_code == 200:
+        print("消息推送成功!")
+    else:
+        print("Failed to send message. Status code:", response.status_code)
 
 
 # 发送 GET 请求
 def send_get_request(url):
     response = requests.get(url)
-    return response.text  # response是Response类型对象，这个response.text是字符串类型，
+    # response.text 字符串类型，能通过json.load(str)转json；Response也可直接response.json()转json
+    return response.text
 
 
 # 发送 POST 请求
@@ -95,6 +117,9 @@ if __name__ == "__main__":
     GLOBAL_KEY_TOKEN = os.environ.get("GLOBAL_KEY")
     ZONE_ID_TOKEN = os.environ.get("ZONE_ID")
     DOMAIN_NAME = os.environ.get("DOMAIN")
+
+    BOT_TOKEN = os.environ.get("BOT_TOKEN")
+    CHAT_ID = os.environ.get("CHAT_ID")
 
     # 更新cf域名记录为最新5个优选ip
     update_dns_records(EMAIL_NAME, GLOBAL_KEY_TOKEN, ZONE_ID_TOKEN, DOMAIN_NAME, best5_ip_list)

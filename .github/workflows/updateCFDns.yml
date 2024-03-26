@@ -29,5 +29,7 @@ jobs:
           GLOBAL_KEY: ${{ secrets.GLOBAL_KEY }}
           ZONE_ID: ${{ secrets.ZONE_ID }}
           DOMAIN: ${{ secrets.DOMAIN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python src/change_CF_DNS.py
 
