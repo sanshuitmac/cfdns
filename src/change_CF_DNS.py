@@ -105,9 +105,18 @@ if __name__ == "__main__":
     # print(ip_list)
 
     # 发送请求到指定接口获取优选ip列表
-    url = 'https://vps789.com/vps/sum/cfIpTop20'
-    url = 'https://api.345673.xyz/get_data'
-    response = send_get_request(url)
+    # url = 'https://vps789.com/vps/sum/cfIpTop20'
+    # send_get_request(url)
+    # 第二个接口，post且有key请求头，但是移动对应下载速度很慢
+    url = "https://api.345673.xyz/get_data"
+    key = "o1zrmHAF"
+    data = {"key": key}
+    response = requests.post(url, json=data)
+    print(response)
+    result = response.json()
+    if result["code"] == 200:
+        info = result["info"]
+        print(info)
     # 解析响应结果获取对应接口最新优选ip列表
     ip_list = get_best_ip(response)
     # 获取优选ip列表ip_lists前5个写入域名记录
@@ -123,4 +132,4 @@ if __name__ == "__main__":
     CHAT_ID = os.environ.get("CHAT_ID")
 
     # 更新cf域名记录为最新5个优选ip
-    update_dns_records(EMAIL_NAME, GLOBAL_KEY_TOKEN, ZONE_ID_TOKEN, DOMAIN_NAME, best5_ip_list)
+    # update_dns_records(EMAIL_NAME, GLOBAL_KEY_TOKEN, ZONE_ID_TOKEN, DOMAIN_NAME, best5_ip_list)
