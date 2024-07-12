@@ -106,6 +106,7 @@ if __name__ == "__main__":
 
     # 发送请求到指定接口获取优选ip列表
     url = 'https://vps789.com/vps/sum/cfIpTop20'
+    url = 'https://api.345673.xyz/get_data'
     response = send_get_request(url)
     # 解析响应结果获取对应接口最新优选ip列表
     ip_list = get_best_ip(response)
